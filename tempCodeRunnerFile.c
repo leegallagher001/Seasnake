@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <conio.h>
 
 #define cols 20
@@ -80,7 +79,6 @@ void read_keyboard()
 
 int main(int argc, char **argv)
 {
-
     while (!isGameOver)
     {
         fill_board();
