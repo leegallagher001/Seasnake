@@ -79,6 +79,13 @@ void draw_snake()
 
 void move_snake(int deltaX, int deltaY)
 {
+    int i;
+
+    for (i = snake.length - 1; i > 0; i--)
+    {
+        snake.part[i] = snake.part[i - 1];
+    }
+
     snake.part[0].x += deltaX;
     snake.part[0].y += deltaY;
 }
@@ -107,9 +114,13 @@ void read_keyboard()
 int main(int argc, char **argv)
 {
 
-    snake.length = 1;
+    snake.length = 3;
     snake.part[0].x = cols / 2;
     snake.part[0].y = rows / 2;
+    snake.part[1].x = cols / 2 - 1;
+    snake.part[1].y = rows / 2;
+    snake.part[2].x = cols / 2 - 2;
+    snake.part[2].y = rows / 2;
 
     while (!isGameOver)
     {
