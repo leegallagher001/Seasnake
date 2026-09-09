@@ -4,6 +4,7 @@
 
 #define cols 20
 #define rows 20
+#define foods 10
 
 char board[cols * rows];
 
@@ -65,6 +66,13 @@ struct Snake
 
 struct Snake snake;
 
+struct  Food {
+    int x, y;
+    int consumed;
+};
+
+struct Food food[foods];
+
 void draw_snake()
 {
     int i;
@@ -111,8 +119,29 @@ void read_keyboard()
     }
 }
 
+void place_food() {
+    int i;
+
+    for (i = 0; i < foods; i++) {
+        if (!food[i].consumed) {
+            board[food[i].y * cols + food[i].x] = '+';
+        }
+    }
+}
+
+void setup_food() {
+    int i;
+
+    for (i = 0; i < foods; i++) {
+        food[i].x = 1 + rand() % (cols - 2);
+        food[i].y = 1 + rand() % (rows - 2);
+        food[i].consumed = 0;
+    }
+}
+
 int main(int argc, char **argv)
 {
+    srand(time(0));
 
     snake.length = 3;
     snake.part[0].x = cols / 2;
@@ -122,11 +151,19 @@ int main(int argc, char **argv)
     snake.part[2].x = cols / 2 - 2;
     snake.part[2].y = rows / 2;
 
+    setup_food();
+
     while (!isGameOver)
     {
         fill_board();
+        place_food();
         draw_snake();
         print_board();
+        printf("\n\nLength: %d\n\n", snake.length);
+        printf("Positioning Data:\n");
+        printf("%d %d\n", snake.part[0].x, snake.part[0].y);
+        printf("%d %d\n", snake.part[1].x, snake.part[1].y);
+        printf("%d %d\n", snake.part[2].x, snake.part[2].y);
         read_keyboard();
     }
 
