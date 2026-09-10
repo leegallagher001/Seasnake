@@ -1,16 +1,17 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
+#include <stdio.h> // Standard I/O library
+#include <stdlib.h> // Standard C library
+#include <conio.h> // Console I/O library for getch() and putch()
+#include <time.h> // Time library for C
 
-#define cols 20
-#define rows 20
-#define foods 10
+#define cols 20 // width of the game board
+#define rows 20 // height of the game board
+#define foods 10 // number of food pieces on the board
 
-char board[cols * rows];
+char board[cols * rows]; // character array to represent the game board
 
-int isGameOver = 0;
+int isGameOver = 0; // game over = false
 
-void fill_board()
+void fill_board() // design of game board char element
 {
     int x, y;
 
@@ -154,6 +155,10 @@ void game_rules() {
             }
         }
     }
+
+    if (snake.part[0].x == 0 || snake.part[0].x == cols - 1 || snake.part[0].y == 0 || snake.part[0].y == rows - 1) {
+        isGameOver = 1;
+    }
 }
 
 int main(int argc, char **argv)
@@ -180,6 +185,10 @@ int main(int argc, char **argv)
         printf("%d %d\n", snake.part[2].x, snake.part[2].y);
         read_keyboard();
     }
+
+    printf("Game Over. Final Score: %d\n", (snake.length - 1) * 100);
+
+    while(1) getch();
 
     return 0;
 }
