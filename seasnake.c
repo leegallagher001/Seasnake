@@ -39,8 +39,6 @@ void print_board()
 {
     int x, y;
 
-    clear_screen();
-
     for (y = 0; y < rows; y++)
     {
         for (x = 0; x < cols; x++)
@@ -139,18 +137,30 @@ void setup_food() {
     }
 }
 
+void setup_snake() {
+    snake.length = 1;
+    snake.part[0].x = 1 + rand() % (cols - 2);
+    snake.part[0].y = 1 + rand() % (rows - 2);
+}
+
+void game_rules() {
+    int i;
+
+    for (i = 0; i < foods; i++) {
+        if (!food[i].consumed) {
+            if (food[i].x == snake.part[0].x && food[i].y == snake.part[0].y) {
+                food[i].consumed = 1;
+                snake.length++;
+            }
+        }
+    }
+}
+
 int main(int argc, char **argv)
 {
     srand(time(0));
 
-    snake.length = 3;
-    snake.part[0].x = cols / 2;
-    snake.part[0].y = rows / 2;
-    snake.part[1].x = cols / 2 - 1;
-    snake.part[1].y = rows / 2;
-    snake.part[2].x = cols / 2 - 2;
-    snake.part[2].y = rows / 2;
-
+    setup_snake();
     setup_food();
 
     while (!isGameOver)
@@ -158,6 +168,10 @@ int main(int argc, char **argv)
         fill_board();
         place_food();
         draw_snake();
+        game_rules();
+        clear_screen();
+        printf("S E A S N A K E\n\n");
+        printf("Score: %d\n\n", (snake.length - 1) * 100);
         print_board();
         printf("\n\nLength: %d\n\n", snake.length);
         printf("Positioning Data:\n");
