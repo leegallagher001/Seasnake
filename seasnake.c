@@ -159,6 +159,12 @@ void game_rules() {
     if (snake.part[0].x == 0 || snake.part[0].x == cols - 1 || snake.part[0].y == 0 || snake.part[0].y == rows - 1) {
         isGameOver = 1;
     }
+
+    for (i = 0; i < snake.length; i++) {
+        if (snake.part[0].x == snake.part[i].x && snake.part[0].y == snake.part[i].y && i != 0) { // i != 0 needed so that the head is not included as colliding with itself
+            isGameOver = 1;
+        }
+    }
 }
 
 int main(int argc, char **argv)
@@ -183,7 +189,9 @@ int main(int argc, char **argv)
         printf("%d %d\n", snake.part[0].x, snake.part[0].y);
         printf("%d %d\n", snake.part[1].x, snake.part[1].y);
         printf("%d %d\n", snake.part[2].x, snake.part[2].y);
-        read_keyboard();
+        if (!isGameOver) {
+            read_keyboard();
+        }
     }
 
     printf("Game Over. Final Score: %d\n", (snake.length - 1) * 100);
